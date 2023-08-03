@@ -1,14 +1,14 @@
 <template>
-        <v-form v-model="valid" class="home" @submit.prevent>
-            <v-col class="col">
-                <v-text></v-text>
-            </v-col>
-            <v-col class="col">
-                <v-text-field v-model="username" :rules="nameRules" :counter="10" label="User name"></v-text-field>
-                <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-            </v-col>
-            <v-btn type="submit" class="btn" :disabled="!valid">Submit</v-btn>
-        </v-form>
+    <v-form v-model="valid" class="home" @submit.prevent>
+        <v-text class="title">Login</v-text>
+        <div class="col">
+            <v-text-field class="input" v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+            <v-text-field class="input" v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="[passwordrules.required, passwordrules.min]" :type="show1 ? 'text' : 'password'" label="Password"
+                @click:append="show1 = !show1"></v-text-field>
+        </div>
+        <v-btn type="submit" class="btn" @click="login" :disabled="!valid">Login</v-btn>
+    </v-form>
 </template>
 
 <script>
@@ -20,47 +20,47 @@ export default {
     },
     data: () => ({
         valid: false,
-        username: '',
-        nameRules: [
-            value => {
-                if (value) return true
-
-                return 'Username is required.'
-            },
-            value => {
-                if (value?.length <= 10) return true
-
-                return 'Name must be less than 10 characters.'
-            },
-        ],
         email: '',
+        password: '',
+        show1: false,
         emailRules: [
             value => {
                 if (value) return true
-
                 return 'E-mail is requred.'
             },
             value => {
                 if (/.+@.+\..+/.test(value)) return true
-
                 return 'E-mail must be valid.'
             },
         ],
+        passwordrules: {
+            required: value => !!value || 'Password is required.',
+            min: v => v.length >= 8 || 'Min 8 characters'
+        },
     }),
+    methods: {
+        login: function () {
+            alert("login")
+        }
+    }
 }
 </script>
 
 <style>
+* {
+    color: #00254a;
+}
 
 #app {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
+    background-image: linear-gradient(rgb(255, 255, 255), rgb(220, 220, 220));
 }
 
 .home {
-    background: rgb(145, 145, 145);
+    background: rgb(217 217 217);
     max-width: 90%;
     width: 400px;
     height: 500px;
@@ -69,17 +69,36 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    -webkit-box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
-.col{
+.col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     max-width: 90%;
     width: 90%;
-    max-height: 20%;
+    max-height: 50%;
 }
 
-.btn{
+.btn {
     max-height: 10%;
     max-width: 90%;
 }
 
+.input {
+    width: 100%;
+    margin: 30px;
+}
+
+.title {
+    font-size: xx-large;
+    font-weight: 700;
+    letter-spacing: 5px;
+    position: relative;
+    bottom: 20px;
+}
 </style>
