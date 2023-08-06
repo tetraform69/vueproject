@@ -1,18 +1,21 @@
 <template>
-    <v-form v-model="valid" class="home" @submit.prevent>
-        <v-text class="title">Login</v-text>
-        <div class="col">
-            <v-text-field class="input" v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-            <v-text-field class="input" v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="[passwordrules.required, passwordrules.min]" :type="show1 ? 'text' : 'password'" label="Password"
-                @click:append="show1 = !show1"></v-text-field>
-        </div>
-        <v-btn type="submit" class="btn" @click="login" :disabled="!valid">Login</v-btn>
-    </v-form>
+    <div class="home">
+        <v-form v-model="valid" class="form" @submit.prevent>
+            <v-text class="title">Login</v-text>
+            <div class="col">
+                <v-text-field class="input" v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+                <v-text-field class="input" v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="[passwordrules.required, passwordrules.min]" :type="show1 ? 'text' : 'password'" label="Password"
+                    @click:append="show1 = !show1"></v-text-field>
+            </div>
+            <v-btn type="submit" class="btn" @click="login" :disabled="!valid">Login</v-btn>
+        </v-form>
+    </div>
 </template>
 
 <script>
 // @ is an alias to /src @/components/LoginApp.vue
+import axios from 'axios'
 
 export default {
     name: 'LoginView',
@@ -35,31 +38,30 @@ export default {
         ],
         passwordrules: {
             required: value => !!value || 'Password is required.',
-            min: v => v.length >= 8 || 'Min 8 characters'
+            min: v => v.length >= 5 || 'Min 5 characters'
         },
     }),
     methods: {
         login: function () {
-            alert("login")
+            axios.post("http://127.0.0.1:8000/api/auth", {
+                email: this.email,
+                password: this.password
+            })
+                .then(res => {
+                    localStorage.token = res.data.token
+                    window.location = `/#/${res.data.user.rol}`
+                })
+                .catch(function (err) {
+                    console.log(err)
+                })
         }
-    }
+    },
 }
 </script>
 
-<style>
-* {
-    color: #00254a;
-}
+<style scoped>
 
-#app {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-image: linear-gradient(rgb(255, 255, 255), rgb(220, 220, 220));
-}
-
-.home {
+.form {
     background: rgb(217 217 217);
     max-width: 90%;
     width: 400px;
