@@ -38,7 +38,7 @@ export default {
         ],
         passwordrules: {
             required: value => !!value || 'Password is required.',
-            min: v => v.length >= 5 || 'Min 5 characters'
+            min: v => v.length >= 4 || 'Min 4 characters'
         },
     }),
     methods: {
@@ -60,6 +60,13 @@ export default {
 </script>
 
 <style scoped>
+
+.home{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
 
 .form {
     background: rgb(217 217 217);

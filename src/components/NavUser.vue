@@ -1,46 +1,77 @@
 <template>
     <nav class="Nav">
-        <a href="" ></a>
+        <template v-for="option in options">
+            <router-link :to="option.url" :key="option.text" class="navOption">{{ option.text }}</router-link>
+        </template>
     </nav>
 </template>
 
 <script>
 
 // @ is an alias to /src @/components/LoginApp.vue
-import axios from 'axios'
 
 export default {
     name: 'NavUser',
-    mounted: async function () {
-
-        let token = localStorage.token
-
-        axios.get("http://127.0.0.1:8000/api/userprofile", {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then(request => {
-                console.log(request.data)
-                this.user=request.data
-            })
-            .catch(function (err) {
-                console.log(err)
-            })
+    props: {
+        rol: {
+            type: String
+        }
     },
     data: () => ({
-        user: {},
-        roles: {
-            user: [
-                'settings',
-                'logout'
-            ],
-            admin: [
-                'new user',
-                'settings',
-                'logout'
-            ]
-        }
+        ops: [
+            {
+                text: 'home',
+                url: '/'
+            },
+            {
+                text: 'logout',
+                url: 'user'
+            },
+        ]
     }),
+    computed: {
+        options: function () {
+            if (this.rol == "admin") {
+                return this.ops.toSpliced(1, 0, {
+                    text: "users",
+                    url: "user",
+                })
+            }
+            return this.ops
+        }
+    }
 }
 </script>
+
+<style scoped>
+.Nav {
+    background: #999999;
+    position: sticky;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-self: flex-start;
+}
+
+.navOption {
+    min-width: 150px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: larger;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    transition: all 0.5s;
+    color: #00254a;
+}
+
+.navOption:hover {
+    letter-spacing: 4px;
+    color: #7bcaff;
+}
+</style>

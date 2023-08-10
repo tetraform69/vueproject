@@ -12,8 +12,7 @@
     text-align: center;
     color: #00254a;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     height: 100vh;
     background-image: linear-gradient(rgb(255, 255, 255), rgb(220, 220, 220));
 }
