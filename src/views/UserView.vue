@@ -4,14 +4,11 @@
         <v-form v-model="valid" class="form" @submit.prevent>
             <v-text class="title">User</v-text>
             <div class="col">
-                <v-text-field class="input" v-model="user.name" :rules="inputRules" label="Username"
-                    required></v-text-field>
+                <v-text-field class="input" v-model="user.name" :rules="inputRules" label="Username" required></v-text-field>
                 <v-text-field class="input" v-model="user.email" :rules="emailRules" label="E-mail" required></v-text-field>
-                <v-text-field class="input" v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[passwordrules.required, passwordrules.min]" :type="show1 ? 'text' : 'password'"
-                    label="Password" @click:append="show1 = !show1"></v-text-field>
+                <v-text-field class="input" v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[passwordrules.required, passwordrules.min]" :type="show1 ? 'text' : 'password'" label="Password" @click:append="show1 = !show1"></v-text-field>
             </div>
-            <v-btn type="submit" class="btn" @click="update" :disabled="!valid && !change">Update</v-btn>
+            <v-btn type="submit" class="btn" @click="update" :disabled="!valid">Update</v-btn>
         </v-form>
     </div>
 </template>
@@ -48,10 +45,16 @@ export default {
         valid: false,
         password: '',
         show1: false,
-        inputRules: {
-            required: value => !!value || 'Username is required.',
-            min: v => v.length >= 4 || 'Min 4 characters'
-        },
+        inputRules: [
+            value => {
+                if (value) return true
+                return 'E-mail is requred.'
+            },
+            value => {
+                if (value.length >= 4) return true
+                return 'Min 4 characters'
+            },
+        ],
         emailRules: [
             value => {
                 if (value) return true

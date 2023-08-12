@@ -21,11 +21,11 @@ export default {
         ops: [
             {
                 text: 'home',
-                url: '/'
+                url: '/user'
             },
             {
                 text: 'logout',
-                url: 'user'
+                url: '/'
             },
         ]
     }),
@@ -34,7 +34,7 @@ export default {
             if (this.rol == "admin") {
                 return this.ops.toSpliced(1, 0, {
                     text: "users",
-                    url: "user",
+                    url: "/admin",
                 })
             }
             return this.ops
