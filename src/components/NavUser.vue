@@ -25,7 +25,7 @@ export default {
             },
             {
                 text: 'logout',
-                url: '/'
+                url: '/logout'
             },
         ]
     }),
